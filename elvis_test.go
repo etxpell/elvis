@@ -120,3 +120,42 @@ func TestCheckAlgoThreeHappyCaseWholeReplUsed(t *testing.T) {
 		t.Errorf("got '%s', expected '%s'", output.Bytes(), expected)
 	}
 }
+
+func TestCheckAlgoThreeHappyCaseSameLetters(t *testing.T) {
+	var output bytes.Buffer
+	in := []byte("abcdepresleyab")
+	find := []byte("presley")
+	repl := []byte("Presley")
+	expected := []byte("abcdePresleyab")
+
+	algThree(in, find, repl, &output)
+	if bytes.Compare(output.Bytes(), expected) != 0 {
+		t.Errorf("got '%s', expected '%s'", output.Bytes(), expected)
+	}
+}
+
+func TestCheckAlgoThreeArrayOverRun(t *testing.T) {
+	var output bytes.Buffer
+	in := []byte("abcdepresley")
+	find := []byte("presley")
+	repl := []byte("Presley")
+	expected := []byte("abcdePresley")
+
+	algThree(in, find, repl, &output)
+	if bytes.Compare(output.Bytes(), expected) != 0 {
+		t.Errorf("got '%s', expected '%s'", output.Bytes(), expected)
+	}
+}
+
+func TestCheckAlgoThreeArrayUnderRun(t *testing.T) {
+	var output bytes.Buffer
+	in := []byte("velvis")
+	find := []byte("elvis")
+	repl := []byte("Elvis")
+	expected := []byte("vElvis")
+
+	algThree(in, find, repl, &output)
+	if bytes.Compare(output.Bytes(), expected) != 0 {
+		t.Errorf("got '%s', expected '%s'", output.Bytes(), expected)
+	}
+}

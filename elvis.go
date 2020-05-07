@@ -195,19 +195,25 @@ func algThree(data []byte, find []byte, repl []byte, output *bytes.Buffer) {
 		matrix[i] = 255
 	}
 	for i, x := range find {
-		// The jump table must contain the smallest jump, not applicable
+		// Set up the table so that all letters in find contain the distance
+		// to the first letter of the find.
+		// It must contain the smallest jump, not applicable
 		// for Elvis but would be for Presley
 		if matrix[x] > byte(i) {
 			matrix[x] = byte(i)
 		}
 	}
+	fmt.Printf("matrix[e]: %d\n", matrix['e'])
 
 main_loop:
 	for ix := 0; true; ix += find_sz {
-		p := matrix[data[ix]]
-		if p != 255 {
-			tmp := ix - int(p)
+		p := int(matrix[data[ix]])
+		if p != 255 && p <= ix {
+			tmp := ix - p
+			fmt.Printf("ix: %d, p: %d tmp: %d\n", ix, p, tmp)
+
 			if bytes.Compare(data[tmp:tmp+find_sz], find) == 0 {
+				fmt.Printf("match!\n")
 				for i, d := range repl {
 					data[tmp+i] = d
 				}
